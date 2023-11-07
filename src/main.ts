@@ -12,7 +12,12 @@ async function bootstrap() {
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('/swagger', app, document);
+  SwaggerModule.setup('/swagger', app, document, {
+    swaggerOptions: {
+      tagsSoter: 'alpha',
+      operationsSorter: 'alpha',
+    },
+  });
   await app.listen(8080);
 }
 bootstrap();
