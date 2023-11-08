@@ -22,10 +22,11 @@ import { UploadDto } from 'src/user/dto/upload.dto';
 import { diskStorage } from 'multer';
 import { FileInterceptor } from '@nestjs/platform-express';
 
-// @ApiBearerAuth()
-// @UseGuards(AuthGuard('jwt'))
+
 @ApiTags('Room')
 @Controller('api')
+// @ApiBearerAuth()
+// @UseGuards(AuthGuard('jwt'))
 export class RoomController {
   constructor(private readonly roomService: RoomService) {}
   @Get('/room')
@@ -33,8 +34,8 @@ export class RoomController {
     return this.roomService.findAll();
   }
   @Get('/room/:id')
-  findOne(@Param('id') id: string) {
-    return this.roomService.findOne(+id);
+  findOne(@Param('id') cmtId: string) {
+    return this.roomService.findOne(+cmtId);
   }
   @Post('/room')
   create(@Body() createRoomDto: CreateRoomDto) {
@@ -76,5 +77,9 @@ export class RoomController {
     @Query('room_id') roomId: string,
   ) {
     return this.roomService.uploadImg(token, files, +roomId);
+  }
+  @Get('/room/pagina-search')
+  paginaRoom(@Query('page') page: string, @Query('pageSize') pageSize: string) {
+    return this.roomService.paginaRoom(+page, +pageSize);
   }
 }

@@ -10,6 +10,7 @@ import {
   UseInterceptors,
   UploadedFile,
   Headers,
+  Query,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -22,8 +23,8 @@ import { uploadImg } from 'src/utils/upload';
 
 @ApiTags('User')
 @Controller('api')
-// @ApiBearerAuth()
-// @UseGuards(AuthGuard('jwt'))
+@ApiBearerAuth()
+@UseGuards(AuthGuard('jwt'))
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -71,5 +72,13 @@ export class UserController {
     @Headers('token') token: string,
   ) {
     return this.userService.uploadAvatar(token, file);
+  }
+  @Get('/user/pagina-search')
+  pagina(
+    @Query('page') page: string,
+    @Query('pageSize') pageSize: string,
+    @Query('userName') userName: string,
+  ) {
+    return this.userService.pagina(+page, +pageSize, userName);
   }
 }

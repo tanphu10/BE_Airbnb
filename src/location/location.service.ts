@@ -10,17 +10,32 @@ export class LocationService {
   model = new PrismaClient();
   async findAll() {
     let data = await this.model.location.findMany();
-    return { status: 200, response: data };
+    return {
+      status: 200,
+      message: 'get all thành công',
+      content: data,
+      dateTime: new Date(),
+    };
   }
 
   async findOne(id: number) {
     let data = await this.model.location.findUnique({ where: { id } });
-    return { status: 200, response: data };
+    return {
+      status: 200,
+      message: 'get by id thành công',
+      content: data,
+      dateTime: new Date(),
+    };
   }
 
   async create(createLocationDto: CreateLocationDto) {
     let data = await this.model.location.create({ data: createLocationDto });
-    return { status: 200, message: 'đã tạo thành công', response: data };
+    return {
+      status: 200,
+      message: 'đã tạo thành công',
+      content: data,
+      dateTime: new Date(),
+    };
   }
 
   async update(id: number, updateLocationDto: UpdateLocationDto) {
@@ -28,12 +43,21 @@ export class LocationService {
       data: updateLocationDto,
       where: { id },
     });
-    return { status: 200, message: 'update thành công', response: data };
+    return {
+      status: 200,
+      message: 'update thành công',
+      content: data,
+      dateTime: new Date(),
+    };
   }
 
   async remove(id: number) {
     await this.model.location.delete({ where: { id } });
-    return { status: 200, content: `đã xóa thành công ${id}` };
+    return {
+      status: 200,
+      message: `đã xóa thành công ${id}`,
+      dateTime: new Date(),
+    };
   }
   async uploadImg(token: string, files: Express.Multer.File, locateId: number) {
     // console.log(token);
@@ -56,11 +80,13 @@ export class LocationService {
         status: 201,
         message: 'upload hình vị trí thành công thành công',
         content: updateImg,
+        dateTime: new Date(),
       };
     } else {
       return {
         status: 400,
         message: 'User không có quyền upload hình',
+        dateTime: new Date(),
       };
     }
   }

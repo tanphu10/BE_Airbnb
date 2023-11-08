@@ -4,13 +4,19 @@ import { PrismaClient } from '@prisma/client';
 import * as brcypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { skip } from 'node:test';
 @Injectable()
 export class UserService {
   constructor(private jwtService: JwtService) {}
   prisma = new PrismaClient();
   async findAll() {
     let data = await this.prisma.users.findMany();
-    return { status: '200', response: data };
+    return {
+      status: '200',
+      message: 'get all user thành công',
+      content: data,
+      dateTime: new Date(),
+    };
   }
   async findOne(id: number) {
     let data = await this.prisma.users.findUnique({ where: { id } });
@@ -18,7 +24,8 @@ export class UserService {
     return {
       status: 200,
       message: 'get user theo id thành công',
-      response: newData,
+      content: newData,
+      dateTime: new Date(),
     };
   }
   async create(createUserDto: CreateUserDto) {
@@ -35,20 +42,20 @@ export class UserService {
           status: 201,
           message: 'create user thành công',
           content: data,
+          dateTime: new Date(),
         };
       }
     } else {
       return {
         status: 400,
         message: 'role không đúng chỉ được tạo là USER hoặc ADMIN',
+        dateTime: new Date(),
       };
     }
   }
   async update(id: number, updateUserDto: UpdateUserDto) {
     let { pass_word } = updateUserDto;
-
     let user = await this.prisma.users.findUnique({ where: { id } });
-
     if (!user) {
       return 'user không tồn tại';
     } else {
@@ -58,18 +65,40 @@ export class UserService {
         data: newUser,
         where: { id },
       });
-      return { status: 200, message: 'update user thành công', response: data };
+      return {
+        status: 200,
+        message: 'update user thành công',
+        content: data,
+        dateTime: new Date(),
+      };
     }
   }
   async remove(id: number) {
     await this.prisma.users.delete({ where: { id } });
-    return ` đã xóa thành công ${id}`;
+    return {
+      status: 200,
+      message: ` đã xóa thành công ${id}`,
+      dateTime: new Date(),
+    };
   }
   async search(userName: string) {
     let data = await this.prisma.users.findMany({
       where: { full_name: { contains: userName } },
     });
-    return { status: 200, message: 'xóa user thành công', response: data };
+    if (data.length > 0) {
+      return {
+        status: 200,
+        message: 'danh sách user',
+        content: data,
+        dateTime: new Date(),
+      };
+    } else {
+      return {
+        status: 401,
+        message: 'không tìm thấy data',
+        dateTime: new Date(),
+      };
+    }
   }
   async uploadAvatar(token: string, file: Express.Multer.File) {
     let decodeToken: any = this.jwtService.decode(token);
@@ -84,7 +113,26 @@ export class UserService {
     return {
       status: 200,
       message: 'upload avatar thành công',
-      response: updateAvt,
+      content: updateAvt,
+      dateTime: new Date(),
+    };
+  }
+  async pagina(page: number, pageSize: number, userName: string) {
+    let index = (page - 1) * pageSize;
+    let data = await this.prisma.users.findMany({
+      skip: index,
+      take: +pageSize,
+      where: {
+        full_name: {
+          contains: userName,
+        },
+      },
+    });
+    return {
+      status: 200,
+      message: 'get theo trang thành công',
+      content: data,
+      dateTime: new Date(),
     };
   }
 }

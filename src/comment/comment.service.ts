@@ -14,7 +14,8 @@ export class CommentService {
     return {
       status: 200,
       message: 'get theo user_id thành công',
-      response: data,
+      content: data,
+      dateTime: new Date(),
     };
   }
   async findOne(id: number) {
@@ -25,12 +26,14 @@ export class CommentService {
       return {
         status: 200,
         message: 'get theo room_id thành công',
-        response: data,
+        content: data,
+        dateTime: new Date(),
       };
     } else {
       return {
         status: 404,
         message: 'phòng chưa có comment',
+        dateTime: new Date(),
       };
     }
   }
@@ -42,12 +45,14 @@ export class CommentService {
       return {
         status: 404,
         message: 'user chưa bình luận',
+        dateTime: new Date(),
       };
     } else {
       return {
         status: 200,
         message: 'get theo user_id thành công',
-        response: data,
+        content: data,
+        dateTime: new Date(),
       };
     }
   }
@@ -56,7 +61,8 @@ export class CommentService {
     return {
       status: 200,
       message: 'post theo user_id thành công',
-      response: data,
+      content: data,
+      dateTime: new Date(),
     };
   }
   async update(
@@ -81,12 +87,14 @@ export class CommentService {
       return {
         status: 200,
         message: 'update comment thành công',
-        response: data,
+        content: data,
+        dateTime: new Date(),
       };
     } else {
       return {
         status: 401,
         message: 'không có quyền update',
+        dateTime: new Date(),
       };
     }
   }

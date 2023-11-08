@@ -17,7 +17,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     const currentTime = Date.now() / 1000;
     if (decodeToken.exp < currentTime) {
       return { status: 400, message: 'token đã hết hạn' };
+    } else {
+      return decodeToken;
     }
-    return decodeToken;
   }
 }

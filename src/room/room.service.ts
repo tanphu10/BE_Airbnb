@@ -10,15 +10,31 @@ export class RoomService {
   prisma = new PrismaClient();
   async findAll() {
     let data = await this.prisma.room.findMany();
-    return { status: 200, message: 'get all thành công', content: data };
+    return {
+      status: 200,
+      message: 'get all thành công',
+      content: data,
+      dateTime: new Date(),
+    };
   }
-  async findOne(id: number) {
-    let data = await this.prisma.room.findUnique({ where: { id } });
-    return { status: 200, message: 'get room thành công', content: data };
+  async findOne(cmtId: number) {
+    console.log(cmtId);
+    let data = await this.prisma.room.findFirst({ where: { id: cmtId } });
+    return {
+      status: 200,
+      message: 'get room thành công',
+      content: data,
+      dateTime: new Date(),
+    };
   }
   async create(createRoomDto: CreateRoomDto) {
     let data = await this.prisma.room.create({ data: createRoomDto });
-    return { status: 200, message: 'đặt phòng thành công', content: data };
+    return {
+      status: 200,
+      message: 'đặt phòng thành công',
+      content: data,
+      dateTime: new Date(),
+    };
   }
   async update(id: number, updateRoomDto: UpdateRoomDto) {
     let data = await this.prisma.room.update({
@@ -29,6 +45,7 @@ export class RoomService {
       status: 201,
       message: 'update đặt phòng thành công',
       content: data,
+      dateTime: new Date(),
     };
   }
   async remove(id: number) {
@@ -40,7 +57,20 @@ export class RoomService {
     let data = await this.prisma.room.findMany({
       where: { name_room: { contains: roomName } },
     });
-    return { status: 200, content: data };
+    if (data.length > 0) {
+      return {
+        status: 200,
+        message: 'danh sách room',
+        content: data,
+        dateTime: new Date(),
+      };
+    } else {
+      return {
+        status: 401,
+        message: 'không tìm thấy data',
+        dateTime: new Date(),
+      };
+    }
   }
   async locateRoom(id: number) {
     console.log(id);
@@ -48,7 +78,12 @@ export class RoomService {
       where: { locate_id: id },
     });
     console.log(data);
-    return { status: 200, content: data };
+    return {
+      status: 200,
+      message: 'get vị trí thành công',
+      content: data,
+      dateTime: new Date(),
+    };
   }
   async uploadImg(token: string, files: Express.Multer.File, roomId: number) {
     let decodeToken: any = this.jwtService.decode(token);
@@ -62,10 +97,32 @@ export class RoomService {
         where: { id: roomId },
       });
       // console.log(data);
-      return { status: 200, message: 'update hình thành công', content: data };
+      return {
+        status: 200,
+        message: 'update hình thành công',
+        content: data,
+        dateTime: new Date(),
+      };
     } else {
-      return { status: 400, message: 'user không có quyền upload hình' };
+      return {
+        status: 400,
+        message: 'user không có quyền upload hình',
+        dateTime: new Date(),
+      };
     }
+  }
+  async paginaRoom(page: number, pageSize: number) {
+    let index = pageSize * (page - 1);
+    let data = await this.prisma.room.findMany({
+      skip: index,
+      take: +pageSize,
+    });
+    return {
+      status: 200,
+      message: 'get theo trang thành công',
+      content: data,
+      dateTime: new Date(),
+    };
   }
 }
 //

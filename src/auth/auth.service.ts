@@ -17,7 +17,12 @@ export class AuthService {
       let newRole = 'USER';
       let newUser = { ...body, pass_word: newPass, role: newRole };
       let data = await this.prisma.users.create({ data: newUser });
-      return { status: 200, message: 'Đăng kí thành công', response: data };
+      return {
+        status: 200,
+        message: 'Đăng kí thành công',
+        content: data,
+        dateTime: new Date(),
+      };
     }
   }
   async signin(body: LoginAuthDto) {
@@ -32,7 +37,7 @@ export class AuthService {
       if (checkPass) {
         let token = this.jwtService.sign(
           { data: checkEmail },
-          { expiresIn: '1s', secret: 'BIMAT' },
+          { expiresIn: '1y', secret: 'BIMAT' },
         );
         // console.log(token);
         return {
@@ -40,12 +45,14 @@ export class AuthService {
           message: 'Đăng nhập thành công',
           content: { user: infoUser },
           token: token,
+          dateTime: new Date(),
         };
       } else {
         return {
           status: 400,
           message: 'Yêu cầu không hợp lệ!',
           content: 'mật khẩu không đúng',
+          dateTime: new Date(),
         };
       }
     } else {
@@ -53,6 +60,7 @@ export class AuthService {
         status: 400,
         message: 'Yêu cầu không hợp lệ!',
         content: 'email không đúng',
+        dateTime: new Date(),
       };
     }
   }
