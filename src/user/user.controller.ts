@@ -23,32 +23,32 @@ import { uploadImg } from 'src/utils/upload';
 
 @ApiTags('User')
 @Controller('api')
-@ApiBearerAuth()
-@UseGuards(AuthGuard('jwt'))
+// @ApiBearerAuth()
+// @UseGuards(AuthGuard('jwt'))
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Get('/user')
+  @Get('/users')
   findAll() {
     return this.userService.findAll();
   }
-  @Get('/user/:id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  @Get('/users/:id')
+  findOne(@Param('id') user_id: string) {
+    return this.userService.findOne(+user_id);
   }
-  @Put('/user/:id')
+  @Put('/users/:id')
   update(@Param('id') id: string, @Body() updateUserDto: CreateUserDto) {
     return this.userService.update(+id, updateUserDto);
   }
-  @Delete('user/:id')
+  @Delete('users/:id')
   remove(@Param('id') id: string) {
     return this.userService.remove(+id);
   }
-  @Get('/user/search/:userName')
+  @Get('/users/search/:userName')
   search(@Param('userName') userName: string) {
     return this.userService.search(userName);
   }
-  @Post('/user')
+  @Post('/users')
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
@@ -66,14 +66,14 @@ export class UserController {
       }),
     }),
   )
-  @Post('/user/upload-avatar')
+  @Post('/users/upload-avatar')
   uploadAvatar(
     @UploadedFile() file: Express.Multer.File,
     @Headers('token') token: string,
   ) {
     return this.userService.uploadAvatar(token, file);
   }
-  @Get('/user/pagina-search')
+  @Get('/users/pagina-search')
   pagina(
     @Query('page') page: string,
     @Query('pageSize') pageSize: string,

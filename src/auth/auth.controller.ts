@@ -12,7 +12,7 @@ import { CreateAuthDto, LoginAuthDto } from './dto/create-auth.dto';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Auth')
-@Controller('auth')
+@Controller('api')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
   @Post('/auth/signup')

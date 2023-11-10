@@ -21,6 +21,9 @@ export class CommentService {
   async findOne(id: number) {
     let data: any = await this.prisma.comments.findMany({
       where: { room_id: id },
+      include: {
+        users: true,
+      },
     });
     if (data.length > 0) {
       return {
@@ -58,6 +61,7 @@ export class CommentService {
   }
   async create(createCommentDto: CreateCommentDto) {
     let data = await this.prisma.comments.create({ data: createCommentDto });
+    // console.log(data);
     return {
       status: 200,
       message: 'post theo user_id thành công',

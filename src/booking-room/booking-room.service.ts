@@ -14,8 +14,10 @@ export class BookingRoomService {
   constructor(private jwtService: JwtService) {}
   model = new PrismaClient();
   async findAll() {
-    let data = await this.model.bookingRoom.findMany();
-    return { status: 200, message: 'get api thành công', response: data };
+    let data = await this.model.bookingRoom.findMany({
+      include: { room: true },
+    });
+    return { status: 200, message: 'get api thành công', content: data };
   }
   async findOne(id: number) {
     let data = await this.model.bookingRoom.findUnique({

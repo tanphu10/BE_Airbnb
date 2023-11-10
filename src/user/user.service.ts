@@ -18,8 +18,10 @@ export class UserService {
       dateTime: new Date(),
     };
   }
-  async findOne(id: number) {
-    let data = await this.prisma.users.findUnique({ where: { id } });
+  async findOne(user_id: number) {
+    // console.log(user_id);
+    let data = await this.prisma.users.findFirst({ where: { id: user_id } });
+    console.log(data);
     let newData = { ...data, pass_word: '' };
     return {
       status: 200,
@@ -103,6 +105,7 @@ export class UserService {
   async uploadAvatar(token: string, file: Express.Multer.File) {
     let decodeToken: any = this.jwtService.decode(token);
     // console.log(decodeToken.data);
+    // console.log('file', file);
     let user = decodeToken.data;
     let { id } = decodeToken.data;
     let newUser = { ...user, avatar: file.filename };

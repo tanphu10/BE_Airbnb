@@ -30,7 +30,7 @@ export class AuthService {
     let checkEmail = await this.prisma.users.findFirst({
       where: { email },
     });
-    // console.log(checkEmail);
+    console.log(checkEmail);
     let infoUser = { ...checkEmail, pass_word: '' };
     if (checkEmail) {
       let checkPass = bcrypt.compareSync(pass_word, checkEmail.pass_word);
@@ -39,7 +39,7 @@ export class AuthService {
           { data: checkEmail },
           { expiresIn: '1y', secret: 'BIMAT' },
         );
-        // console.log(token);
+        console.log(token);
         return {
           status: 200,
           message: 'Đăng nhập thành công',
@@ -50,16 +50,16 @@ export class AuthService {
       } else {
         return {
           status: 400,
-          message: 'Yêu cầu không hợp lệ!',
-          content: 'mật khẩu không đúng',
+          message: 'Yêu cầu không hợp lệ!,mật khẩu không đúng',
+          content: '',
           dateTime: new Date(),
         };
       }
     } else {
       return {
         status: 400,
-        message: 'Yêu cầu không hợp lệ!',
-        content: 'email không đúng',
+        message: 'Yêu cầu không hợp lệ!,email không đúng',
+        content: '',
         dateTime: new Date(),
       };
     }

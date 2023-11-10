@@ -17,8 +17,8 @@ import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('Comment')
 @Controller('api')
-@ApiBearerAuth()
-@UseGuards(AuthGuard('jwt'))
+// @ApiBearerAuth()
+// @UseGuards(AuthGuard('jwt'))
 export class CommentController {
   constructor(private readonly commentService: CommentService) {}
 
