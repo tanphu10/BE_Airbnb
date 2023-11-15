@@ -8,21 +8,23 @@ import { JwtService } from '@nestjs/jwt';
 export class RoomService {
   constructor(private jwtService: JwtService) {}
   prisma = new PrismaClient();
+
   async findAll() {
     let data = await this.prisma.room.findMany();
+    // console.log(data);
     return {
       status: 200,
-      message: 'get all thành công',
+      message: 'get all room thành công',
       content: data,
       dateTime: new Date(),
     };
   }
   async findOne(cmtId: number) {
-    console.log(cmtId);
+    // console.log(cmtId);
     let data = await this.prisma.room.findFirst({ where: { id: cmtId } });
     return {
       status: 200,
-      message: 'get room thành công',
+      message: 'get room by id thành công',
       content: data,
       dateTime: new Date(),
     };
@@ -49,6 +51,11 @@ export class RoomService {
     };
   }
   async remove(id: number) {
+    let room = await this.prisma.room.findFirst({ where: { id } });
+    let { locate_id } = room;
+    await this.prisma.location.deleteMany({
+      where: { id: locate_id },
+    });
     await this.prisma.room.delete({ where: { id } });
     return `xóa thành công phòng ${id}`;
   }
@@ -68,6 +75,7 @@ export class RoomService {
       return {
         status: 401,
         message: 'không tìm thấy data',
+        content: data,
         dateTime: new Date(),
       };
     }
@@ -80,7 +88,7 @@ export class RoomService {
     console.log(data);
     return {
       status: 200,
-      message: 'get vị trí thành công',
+      message: 'get room theo vị trí thành công',
       content: data,
       dateTime: new Date(),
     };
@@ -99,7 +107,7 @@ export class RoomService {
       // console.log(data);
       return {
         status: 200,
-        message: 'update hình thành công',
+        message: 'update hình room thành công  ',
         content: data,
         dateTime: new Date(),
       };
@@ -119,7 +127,7 @@ export class RoomService {
     });
     return {
       status: 200,
-      message: 'get theo trang thành công',
+      message: 'get room theo trang thành công',
       content: data,
       dateTime: new Date(),
     };

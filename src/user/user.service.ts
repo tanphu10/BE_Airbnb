@@ -21,7 +21,7 @@ export class UserService {
   async findOne(user_id: number) {
     // console.log(user_id);
     let data = await this.prisma.users.findFirst({ where: { id: user_id } });
-    console.log(data);
+    // console.log(data);
     let newData = { ...data, pass_word: '' };
     return {
       status: 200,
@@ -76,6 +76,12 @@ export class UserService {
     }
   }
   async remove(id: number) {
+    await this.prisma.bookingRoom.deleteMany({
+      where: { user_id: id },
+    });
+    await this.prisma.comments.deleteMany({
+      where: { user_id: id },
+    });
     await this.prisma.users.delete({ where: { id } });
     return {
       status: 200,
@@ -103,6 +109,7 @@ export class UserService {
     }
   }
   async uploadAvatar(token: string, file: Express.Multer.File) {
+    // console.log(token);
     let decodeToken: any = this.jwtService.decode(token);
     // console.log(decodeToken.data);
     // console.log('file', file);
@@ -113,6 +120,7 @@ export class UserService {
       data: newUser,
       where: { id },
     });
+    // console.log(updateAvt);
     return {
       status: 200,
       message: 'upload avatar thành công',
@@ -138,4 +146,6 @@ export class UserService {
       dateTime: new Date(),
     };
   }
+
+
 }

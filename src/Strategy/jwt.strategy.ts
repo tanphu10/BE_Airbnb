@@ -11,7 +11,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       secretOrKey: 'BIMAT',
     });
   }
-
   async validate(decodeToken: any) {
     // thực  hiện check token còn hạn hey không tại đây
     const currentTime = Date.now() / 1000;

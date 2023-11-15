@@ -8,9 +8,19 @@ import { RoomModule } from './room/room.module';
 import { LocationModule } from './location/location.module';
 import { BookingRoomModule } from './booking-room/booking-room.module';
 import { CommentModule } from './comment/comment.module';
+import { WebsocketsGateway } from './websocketts/websockets.gateway';
+import { WebsocketsModule } from './websocketts/websockets.module';
 
 @Module({
-  imports: [UserModule, AuthModule, RoomModule, LocationModule, BookingRoomModule, CommentModule],
+  imports: [
+    UserModule,
+    AuthModule,
+    RoomModule,
+    LocationModule,
+    BookingRoomModule,
+    CommentModule,
+    WebsocketsModule,
+  ],
   controllers: [AppController],
   providers: [AppService, JwtStrategy],
 })

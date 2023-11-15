@@ -23,11 +23,10 @@ import { uploadImg } from 'src/utils/upload';
 
 @ApiTags('User')
 @Controller('api')
-// @ApiBearerAuth()
-// @UseGuards(AuthGuard('jwt'))
+@ApiBearerAuth()
+@UseGuards(AuthGuard('jwt'))
 export class UserController {
   constructor(private readonly userService: UserService) {}
-
   @Get('/users')
   findAll() {
     return this.userService.findAll();
@@ -57,15 +56,7 @@ export class UserController {
   @ApiBody({
     type: UploadDto,
   })
-  @UseInterceptors(
-    FileInterceptor('file', {
-      storage: diskStorage({
-        destination: process.cwd() + '/public/img',
-        filename: (req, file, calback) =>
-          calback(null, new Date().getTime() + '_' + file.originalname),
-      }),
-    }),
-  )
+  @UseInterceptors(FileInterceptor('file', uploadImg))
   @Post('/users/upload-avatar')
   uploadAvatar(
     @UploadedFile() file: Express.Multer.File,

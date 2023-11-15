@@ -21,12 +21,10 @@ import { AuthGuard } from '@nestjs/passport';
 // @UseGuards(AuthGuard('jwt'))
 export class CommentController {
   constructor(private readonly commentService: CommentService) {}
-
   @Get('/comment')
   findAll() {
     return this.commentService.findAll();
   }
-
   @Get('/comment/get-room/:id')
   findOne(@Param('id') id: string) {
     return this.commentService.findOne(+id);
@@ -47,7 +45,6 @@ export class CommentController {
   ) {
     return this.commentService.update(+cmtId, updateCommentDto, token);
   }
-
   @Delete('/comment/:id')
   remove(@Param('id') cmtId: string, @Headers('token') token: string) {
     return this.commentService.remove(+cmtId, token);

@@ -12,7 +12,7 @@ export class LocationService {
     let data = await this.model.location.findMany();
     return {
       status: 200,
-      message: 'get all thành công',
+      message: 'get all location thành công',
       content: data,
       dateTime: new Date(),
     };
@@ -22,17 +22,16 @@ export class LocationService {
     let data = await this.model.location.findUnique({ where: { id } });
     return {
       status: 200,
-      message: 'get by id thành công',
+      message: 'get location by id thành công',
       content: data,
       dateTime: new Date(),
     };
   }
-
   async create(createLocationDto: CreateLocationDto) {
     let data = await this.model.location.create({ data: createLocationDto });
     return {
       status: 200,
-      message: 'đã tạo thành công',
+      message: 'đã tạo location thành công',
       content: data,
       dateTime: new Date(),
     };
@@ -45,17 +44,16 @@ export class LocationService {
     });
     return {
       status: 200,
-      message: 'update thành công',
+      message: 'update location thành công',
       content: data,
       dateTime: new Date(),
     };
   }
-
   async remove(id: number) {
     await this.model.location.delete({ where: { id } });
     return {
       status: 200,
-      message: `đã xóa thành công ${id}`,
+      message: `đã xóa location thành công ${id}`,
       dateTime: new Date(),
     };
   }
@@ -85,7 +83,7 @@ export class LocationService {
     } else {
       return {
         status: 400,
-        message: 'User không có quyền upload hình',
+        message: 'User không có quyền upload hình location',
         dateTime: new Date(),
       };
     }

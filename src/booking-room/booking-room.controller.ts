@@ -20,8 +20,8 @@ import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('Booking Room')
 @Controller('api')
-// @ApiBearerAuth()
-// @UseGuards(AuthGuard('jwt'))
+@ApiBearerAuth()
+@UseGuards(AuthGuard('jwt'))
 export class BookingRoomController {
   constructor(private readonly bookingRoomService: BookingRoomService) {}
   @Get('/bookroom')

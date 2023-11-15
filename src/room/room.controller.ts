@@ -22,17 +22,21 @@ import { UploadDto } from 'src/user/dto/upload.dto';
 import { diskStorage } from 'multer';
 import { FileInterceptor } from '@nestjs/platform-express';
 
-
 @ApiTags('Room')
 @Controller('api')
 // @ApiBearerAuth()
 // @UseGuards(AuthGuard('jwt'))
 export class RoomController {
   constructor(private readonly roomService: RoomService) {}
+  // @Get('/type-room/:id')
+  // getType(@Param() id:string) {
+  //   return this.roomService.getType(+id);
+  // }
   @Get('/room')
   findAll() {
     return this.roomService.findAll();
   }
+
   @Get('/room/:id')
   findOne(@Param('id') cmtId: string) {
     return this.roomService.findOne(+cmtId);

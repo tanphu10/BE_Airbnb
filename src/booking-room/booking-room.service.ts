@@ -13,11 +13,16 @@ import { JwtService } from '@nestjs/jwt';
 export class BookingRoomService {
   constructor(private jwtService: JwtService) {}
   model = new PrismaClient();
+
   async findAll() {
     let data = await this.model.bookingRoom.findMany({
       include: { room: true },
     });
-    return { status: 200, message: 'get api thành công', content: data };
+    return {
+      status: 200,
+      message: 'get booking Room api thành công',
+      content: data,
+    };
   }
   async findOne(id: number) {
     let data = await this.model.bookingRoom.findUnique({
@@ -34,7 +39,7 @@ export class BookingRoomService {
     } else {
       return {
         status: 200,
-        message: 'get api theo id thành công',
+        message: 'get  booking Room api theo id thành công',
         content: data,
         dateTime: new Date(),
       };
@@ -56,7 +61,8 @@ export class BookingRoomService {
       };
     } catch (exception) {
       console.log(exception);
-      if (exception.statusCode != 500) {
+      if ((exception.statusCode = 400)) {
+        console.log('ex', exception.meta.field_name);
         throw new HttpException(exception.massage, exception.statusCode);
       }
       throw new InternalServerErrorException('Lỗi ...');
@@ -77,9 +83,9 @@ export class BookingRoomService {
   async remove(id: number, token: string) {
     let checkToken: any = this.jwtService.decode(token);
     let user = checkToken.data;
-    console.log(user);
+    // console.log(user);
     let { role } = user;
-    console.log(role);
+    // console.log(role);
     if (role == 'ADMIN') {
       await this.model.bookingRoom.delete({ where: { id } });
       return {
@@ -110,7 +116,7 @@ export class BookingRoomService {
     } else {
       return {
         status: 200,
-        message: 'get theo user_id thành công',
+        message: 'get booking room theo user_id thành công',
         content: data,
         dateTime: new Date(),
       };

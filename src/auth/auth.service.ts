@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable, HttpStatus } from '@nestjs/common';
 import { CreateAuthDto, LoginAuthDto } from './dto/create-auth.dto';
 import { PrismaClient, users } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
@@ -30,7 +30,7 @@ export class AuthService {
     let checkEmail = await this.prisma.users.findFirst({
       where: { email },
     });
-    console.log(checkEmail);
+    // console.log(checkEmail);
     let infoUser = { ...checkEmail, pass_word: '' };
     if (checkEmail) {
       let checkPass = bcrypt.compareSync(pass_word, checkEmail.pass_word);
@@ -39,7 +39,7 @@ export class AuthService {
           { data: checkEmail },
           { expiresIn: '1y', secret: 'BIMAT' },
         );
-        console.log(token);
+        // console.log(token);
         return {
           status: 200,
           message: 'Đăng nhập thành công',
@@ -62,6 +62,24 @@ export class AuthService {
         content: '',
         dateTime: new Date(),
       };
+    }
+  }
+  // -------XỬ LÍ CONNECT CHAT
+
+  async handleVerifyToken(token) {
+    try {
+      const payload = this.jwtService.verify(token);
+      return payload.checkEmail.email;
+    } catch (error) {
+      //       throw new HttpException(
+      //         response: {
+      // key:'',
+      // data:{},
+      // statusCode: HttpStatus.UNAUTHORIZED
+      //         },
+      //         HttpStatus.UNAUTHORIZED
+      //       )
+      console.log(error);
     }
   }
 }

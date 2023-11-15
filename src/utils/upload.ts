@@ -2,12 +2,12 @@ import * as fs from 'fs';
 
 import compress_images from 'compress-images';
 import { diskStorage } from 'multer';
-export const uploadImg = () => {
+export const uploadImg = {
   storage: diskStorage({
     destination: process.cwd() + '/public/img',
     filename: (req, file, calback) =>
       calback(null, new Date().getTime() + '_' + file.originalname),
-  });
+  })
 };
 
 export const toiUuHinh = (file) => {

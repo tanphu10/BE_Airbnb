@@ -13,7 +13,7 @@ export class CommentService {
     let data = await this.prisma.comments.findMany();
     return {
       status: 200,
-      message: 'get theo user_id thành công',
+      message: 'get all comment thành công',
       content: data,
       dateTime: new Date(),
     };
@@ -25,11 +25,13 @@ export class CommentService {
         users: true,
       },
     });
+    // console.log(data)
     if (data.length > 0) {
       return {
         status: 200,
-        message: 'get theo room_id thành công',
+        message: 'get comment theo room_id thành công',
         content: data,
+
         dateTime: new Date(),
       };
     } else {
@@ -53,7 +55,7 @@ export class CommentService {
     } else {
       return {
         status: 200,
-        message: 'get theo user_id thành công',
+        message: 'get comment theo user_id thành công',
         content: data,
         dateTime: new Date(),
       };
@@ -64,7 +66,7 @@ export class CommentService {
     // console.log(data);
     return {
       status: 200,
-      message: 'post theo user_id thành công',
+      message: 'post comment theo user_id thành công',
       content: data,
       dateTime: new Date(),
     };

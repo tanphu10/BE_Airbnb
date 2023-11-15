@@ -33,5 +33,8 @@ export class CreateRoomDto {
   photo: string;
   @ApiProperty()
   locate_id: number;
+  @ApiProperty()
+  metaData: string;
+  @ApiProperty()
+  type_id: number;
 }
- 
