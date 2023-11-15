@@ -10,6 +10,7 @@ import { BookingRoomModule } from './booking-room/booking-room.module';
 import { CommentModule } from './comment/comment.module';
 import { WebsocketsGateway } from './websocketts/websockets.gateway';
 import { WebsocketsModule } from './websocketts/websockets.module';
+import { TypeRoomModule } from './type-room/type-room.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { WebsocketsModule } from './websocketts/websockets.module';
     BookingRoomModule,
     CommentModule,
     WebsocketsModule,
+    TypeRoomModule,
   ],
   controllers: [AppController],
   providers: [AppService, JwtStrategy],
