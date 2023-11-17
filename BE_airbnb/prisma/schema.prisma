@@ -21,12 +21,15 @@ model bookingRoom {
   @@index([user_id], map: "user_id")
 }
 
-model chats {
-  id        Int        @id @default(autoincrement())
-  chat_name String?    @db.VarChar(255)
-  createdAt DateTime?  @default(now()) @db.Timestamp(0)
-  updatedAt DateTime?  @default(now()) @db.Timestamp(0)
-  messages  messages[]
+model chats_users {
+  id         Int         @id @default(autoincrement())
+  chat_id    Int?
+  user_id    Int?
+  users      users?      @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "chats_users_ibfk_1")
+  group_chat group_chat? @relation(fields: [chat_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "chats_users_ibfk_2")
+
+  @@index([chat_id], map: "chat_id")
+  @@index([user_id], map: "user_id")
 }
 
 model comments {
@@ -43,6 +46,15 @@ model comments {
   @@index([user_id], map: "user_id")
 }
 
+model group_chat {
+  id          Int           @id @default(autoincrement())
+  chat_name   String?       @db.VarChar(255)
+  createdAt   DateTime?     @default(now()) @db.Timestamp(0)
+  updatedAt   DateTime?     @default(now()) @db.Timestamp(0)
+  chats_users chats_users[]
+  messages    messages[]
+}
+
 model location {
   id          Int     @id @default(autoincrement())
   name_locate String? @db.VarChar(255)
@@ -53,14 +65,14 @@ model location {
 }
 
 model messages {
-  id        Int       @id @default(autoincrement())
-  user_id   Int?
-  chat_id   Int?
-  content   String?   @db.Text
-  createdAt DateTime? @default(now()) @db.Timestamp(0)
-  updatedAt DateTime? @default(now()) @db.Timestamp(0)
-  users     users?    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "messages_ibfk_1")
-  chats     chats?    @relation(fields: [chat_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "messages_ibfk_2")
+  id         Int         @id @default(autoincrement())
+  user_id    Int?
+  chat_id    Int?
+  content    String?     @db.Text
+  createdAt  DateTime?   @default(now()) @db.Timestamp(0)
+  updatedAt  DateTime?   @default(now()) @db.Timestamp(0)
+  users      users?      @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "messages_ibfk_1")
+  group_chat group_chat? @relation(fields: [chat_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "messages_ibfk_2")
 
   @@index([chat_id], map: "chat_id")
   @@index([user_id], map: "user_id")
@@ -128,6 +140,7 @@ model users {
   avatar      String?       @db.VarChar(255)
   face_app_id String?       @db.VarChar(255)
   bookingRoom bookingRoom[]
+  chats_users chats_users[]
   comments    comments[]
   messages    messages[]
 }

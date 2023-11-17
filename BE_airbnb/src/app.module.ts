@@ -11,6 +11,7 @@ import { CommentModule } from './comment/comment.module';
 import { WebsocketsGateway } from './websocketts/websockets.gateway';
 import { WebsocketsModule } from './websocketts/websockets.module';
 import { TypeRoomModule } from './type-room/type-room.module';
+import { ExChatModule } from './ex-chat/ex-chat.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { TypeRoomModule } from './type-room/type-room.module';
     CommentModule,
     WebsocketsModule,
     TypeRoomModule,
+    ExChatModule,
   ],
   controllers: [AppController],
   providers: [AppService, JwtStrategy],

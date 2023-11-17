@@ -1,0 +1,15 @@
+.header-chat {
+  position: fixed;
+  top: 88 px;
+  left: 0px;
+  right: 0;
+  z-index: 999;
+}
+
+:where(.css-dev-only-do-not-override-2i2tap).ant-layout-header {
+  padding-left: 15px;
+}
+
+:where(.css-dev-only-do-not-override-2i2tap).ant-layout-header {
+  line-height: 0px;
+}

@@ -16,7 +16,8 @@ import Loading from "./pages/Loading/Loading";
 import InfoUser from "./pages/InfoUser/InfoUser";
 import FormAdminLocation from "./Components/FormAdminLocation/FormAdminLocation";
 import AdminRent from "./Components/AdminRent/AdminRent";
-import Chat from "./pages/Chats/Chat";
+import FormChat from "./Components/FormChat/FormChat";
+import ChatMessage from "./pages/Chats/ChatMessage";
 
 function App() {
   return (
@@ -32,7 +33,9 @@ function App() {
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/infouser" element={<InfoUser />} />
-          <Route path="/chat" element={<Chat />} />
+          <Route path="/chat" element={<ChatMessage />}>
+            <Route path="/chat/:id" element={<FormChat />} />
+          </Route>
         </Route>
 
         <Route path="/admin-login" element={<AdminLogin />} />

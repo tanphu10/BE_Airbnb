@@ -7,16 +7,33 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { WebsocketsService } from './websockets.service';
+import { Body, Get, Post, Controller } from '@nestjs/common';
+import { CreateAddUserDto, CreateGroupDto } from './dto/create-groupChat.dto';
+import { ApiTags } from '@nestjs/swagger';
 // @WebSocketGateway(Option: { cors: true })
-// @WebSocketGateway(3000, { transports: ['websocket'] },)
-
-@WebSocketGateway(3000, { transports: ['websocket', 'polling', 'flashsocket'] })
+@ApiTags('group Chat')
+@Controller('api')
+// @WebSocketGateway(3000, { transports: ['websocket'] })
+@WebSocketGateway({ transports: ['websocket', 'polling', 'flashsocket'] })
 export class WebsocketsGateway
   implements OnGatewayConnection, OnGatewayDisconnect
 {
   @WebSocketServer()
   server: Server;
   constructor(private readonly websocketsService: WebsocketsService) {}
+
+  // @Get('/group-chat')
+  // findAll() {
+  //   return this.websocketsService.findAll();
+  // }
+  // @Post('/group-chat')
+  // create(@Body() createGroupChat: CreateGroupDto) {
+  //   return this.websocketsService.create(createGroupChat);
+  // }
+  // @Post('/add-member')
+  // createAdd(@Body() createAddUser: CreateAddUserDto) {
+  //   return this.websocketsService.createAdd(createAddUser);
+  // }
   afterInit(socket: Socket): any {}
 
   async handleConnection(socket: Socket) {
@@ -43,10 +60,11 @@ export class WebsocketsGateway
   }
 
   @SubscribeMessage('join-room')
-  async handleJoinRoom(socket: Socket, roomName: string) {
-    console.log('roomName', roomName);
-    socket.join(roomName);
+  async handleJoinRoom(socket: Socket, data: string) {
+    console.log('roomName', data);
     // socket.emit('roomMessages', roomName);
+    // const createRoom = await this.websocketsService.createMember(data);
+    socket.join(data);
   }
 
   @SubscribeMessage('mess-send')
@@ -61,7 +79,6 @@ export class WebsocketsGateway
     },
   ) {
     const { user_id, content, createdAt, updatedAt, chat_id } = data;
-
     const newData = {
       ...data,
       user_id: Number(user_id),

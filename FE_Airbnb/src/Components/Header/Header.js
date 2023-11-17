@@ -153,7 +153,7 @@ const Header = () => {
                 </div>
                 <div
                   className={
-                    !active
+                    active
                       ? "fixed left-0 top-[200px] w-[50%] border-r-gray-900  bg-[orange] ease-in-out duration-500 "
                       : "fixed left-[-100%]"
                   }

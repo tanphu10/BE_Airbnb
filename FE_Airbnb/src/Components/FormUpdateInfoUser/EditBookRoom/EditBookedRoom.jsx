@@ -72,7 +72,7 @@ const UpdateInfoBooked = (props) => {
   let giaTri = editRoom.find((item) => {
     return item;
   });
-  console.log(giaTri);
+  // console.log(giaTri);
   useEffect(() => {
     setContent(giaTri ? giaTri : "");
   }, [editRoom]);

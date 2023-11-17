@@ -5,6 +5,7 @@ import adminUserSlices from "./slices/adminUserSlices";
 import loadingSlice from "./slices/loadingSlice";
 import bookingRoomSlice from "./slices/bookingRoomSlice";
 import commentUser from "./slices/commentUserSlice";
+import chatSlice from "./slices/chatSlice";
 // import {  } from '@reduxjs/toolkit';
 export const store = configureStore({
   reducer: {
@@ -14,5 +15,6 @@ export const store = configureStore({
     loading: loadingSlice,
     controlbooking: bookingRoomSlice,
     commentUser: commentUser,
+    chatSlice: chatSlice
   },
 });
