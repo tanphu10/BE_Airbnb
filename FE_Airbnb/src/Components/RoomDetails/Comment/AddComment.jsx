@@ -37,7 +37,31 @@ const AddComment = () => {
     // }
     // fetchData();
   }, [comment]);
-
+  const sendComment = () => {
+    if (!layDuLieuLocal("user")) {
+      return document.getElementById("SignIn").click();
+    } else {
+      if (document.getElementById("noiDung").value) {
+        const binhLuan = new Comment();
+        // binhLuan.id = 0;
+        binhLuan.user_id = layDuLieuLocal("user").content.user?.id;
+        binhLuan.room_id = Number(params.id);
+        binhLuan.date_comment = new Date();
+        // dayjs().format("DD/MM/YYYY");
+        binhLuan.content = document.getElementById("noiDung").value;
+        binhLuan.rate = 0;
+        // console.log(binhLuan);
+        dispatch(postCommentApi(binhLuan));
+        messageApi.success("thêm thành công");
+        setComment(arrComment);
+      }
+    }
+  };
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      sendComment();
+    }
+  };
   return (
     <Fragment>
       {contextHolder}
@@ -133,6 +157,7 @@ const AddComment = () => {
               id="noiDung"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
+              onKeyPress={handleKeyPress}
             />
             <label
               htmlFor="floating_name"
@@ -155,26 +180,7 @@ const AddComment = () => {
                 height: "30px",
                 borderRadius: "50%",
               }}
-              onClick={() => {
-                if (!layDuLieuLocal("user")) {
-                  return document.getElementById("SignIn").click();
-                } else {
-                  if (document.getElementById("noiDung").value) {
-                    const binhLuan = new Comment();
-                    // binhLuan.id = 0;
-                    binhLuan.user_id = layDuLieuLocal("user").content.user?.id;
-                    binhLuan.room_id = Number(params.id);
-                    binhLuan.date_comment = new Date();
-                    // dayjs().format("DD/MM/YYYY");
-                    binhLuan.content = document.getElementById("noiDung").value;
-                    binhLuan.rate = 0;
-                    // console.log(binhLuan);
-                    dispatch(postCommentApi(binhLuan));
-                    messageApi.success("thêm thành công");
-                    setComment(arrComment);
-                  }
-                }
-              }}
+              onClick={sendComment}
             >
               <SendOutlined />
             </button>
